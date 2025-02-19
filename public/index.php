@@ -1,4 +1,4 @@
-<?php ; 
+<?php
 require_once '../includes/fileHandler.php';
 require_once '../includes/validator.php';
 
@@ -10,8 +10,9 @@ if (isset($_GET['room_type'])) {
     $filtered_rooms = filterRoomsByType($rooms, $selected_room_type);
 }
 
-include_once '../templates/header.php'
+include_once '../templates/header.php';
 ?>
+
 <section class="page-section clearfix">
     <div class="container">
         <div class="intro">
@@ -28,8 +29,9 @@ include_once '../templates/header.php'
                         <option value="Single">Single</option>
                         <option value="Double">Double</option>
                         <option value="Suite">Suite</option>
+                        <option value="Royal">Royal</option>
                     </select>
-                    <button type="submit" class="btn btn-primary btn-xl mt-3">Search</button>
+                    <button type="submit" class="btn btn-primary btn-xl mt-3">Search Now</button>
                 </form>
             </div>
         </div>
@@ -60,10 +62,12 @@ include_once '../templates/header.php'
                                     </thead>
                                     <tbody>
                                         <?php foreach ($filtered_rooms as $room): ?>
-                                            <tr>
+                                            <tr onclick="window.location='index.php?room_id=<?php echo $room['room_id']; ?>';"
+                                                style="cursor: pointer;"
+                                                class="<?php echo (isset($_GET['room_id']) && $_GET['room_id'] == $room['room_id']) ? 'selected' : ''; ?>">
                                                 <td><?php echo htmlspecialchars($room['room_id']); ?></td>
                                                 <td><?php echo htmlspecialchars($room['room_type']); ?></td>
-                                                <td><?php echo htmlspecialchars($room['price']); ?></td>
+                                                <td><?php echo htmlspecialchars("$" . number_format($room['price'], 2)); ?></td>
                                                 <td><?php echo htmlspecialchars($room['availability']); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -79,6 +83,37 @@ include_once '../templates/header.php'
         </section>
     </div>
 <?php endif; ?>
+
+<?php if (isset($_GET['room_id'])): ?>
+    <?php
+    $room_id = $_GET['room_id'];
+    $rooms = readRoomsFromCSV('../data/rooms.csv');
+    $room_details = null;
+
+    foreach ($rooms as $room) {
+        if ($room['room_id'] == $room_id) {
+            $room_details = $room;
+            break;
+        }
+    }
+    ?>
+
+    <?php if ($room_details): ?>
+        <section class="page-section cta">
+            <div class="container">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2>Room Details</h2>
+                    <p><strong>Room ID:</strong> <?php echo htmlspecialchars($room_details['room_id']); ?></p>
+                    <p><strong>Room Type:</strong> <?php echo htmlspecialchars($room_details['room_type']); ?></p>
+                    <p><strong>Price:</strong> $<?php echo htmlspecialchars($room_details['price']); ?>/night</p>
+                    <p><strong>Availability:</strong> <?php echo htmlspecialchars($room_details['availability']); ?></p>
+                    <a href="index.php" class="btn btn-primary">Back to Search</a>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+<?php endif; ?>
+
 <?php
 include_once '../templates/footer.php';
 ?>
