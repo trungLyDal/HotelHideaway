@@ -103,6 +103,10 @@ include_once '../templates/header.php';
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
                     <h2>Room Details</h2>
+                    <img src="<?php echo htmlspecialchars($room_details['image'] ?? '../public/img/intro.jpg'); ?>"
+                    alt="<?php echo htmlspecialchars($room_details['room_type']); ?>"
+                    class="room-image img-fluid mb-3">
+
                     <p><strong>Room ID:</strong> <?php echo htmlspecialchars($room_details['room_id']); ?></p>
                     <p><strong>Room Type:</strong> <?php echo htmlspecialchars($room_details['room_type']); ?></p>
                     <p><strong>Price:</strong> $<?php echo htmlspecialchars($room_details['price']); ?>/night</p>

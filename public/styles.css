@@ -11060,6 +11060,9 @@ p {
   margin-top: 10px;
 }
 
-.selected {
-  background-color: #e9ecef; /* Light gray background for selected row */
+
+
+html {
+  scroll-behavior: smooth;
 }
+
