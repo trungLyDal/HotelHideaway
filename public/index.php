@@ -16,7 +16,7 @@ include_once '../templates/header.php';
 <section class="page-section clearfix">
     <div class="container">
         <div class="intro">
-            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="intro.jpg" alt="..." />
+            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="intro.jpg" alt="intro picture" />
             <div class="intro-text left-0 text-center bg-faded p-5 rounded">
                 <h2 class="section-heading mb-4">
                     <span class="section-heading-upper">Find</span>
@@ -102,16 +102,18 @@ include_once '../templates/header.php';
         <section class="page-section cta" id = "room-details">
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
-                    <h2>Room Details</h2>
-                    <img src="<?php echo htmlspecialchars($room_details['image'] ?? '../public/img/intro.jpg'); ?>"
-                    alt="<?php echo htmlspecialchars($room_details['room_type']); ?>"
-                    class="room-image img-fluid mb-3">
-
+                <h2 class="section-heading mb-4">
+                                <span class="section-heading-upper">Search Result</span>
+                                <span class="section-heading-lower">Available Room</span>
+                            </h2>
+                    <img src="<?php echo htmlspecialchars($room_details['image']); ?>"
+                         alt="<?php echo htmlspecialchars($room_details['room_type']); ?>"
+                         class="img-fluid mb-3">
                     <p><strong>Room ID:</strong> <?php echo htmlspecialchars($room_details['room_id']); ?></p>
                     <p><strong>Room Type:</strong> <?php echo htmlspecialchars($room_details['room_type']); ?></p>
                     <p><strong>Price:</strong> $<?php echo htmlspecialchars($room_details['price']); ?>/night</p>
                     <p><strong>Availability:</strong> <?php echo htmlspecialchars($room_details['availability']); ?></p>
-                    <a href="index.php" class="btn btn-primary">Back to Search</a>
+                    <a href="#search" class="btn btn-primary">Back to Search</a>
                 </div>
             </div>
         </section>

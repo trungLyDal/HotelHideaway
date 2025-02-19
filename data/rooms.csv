@@ -29,3 +29,5 @@ room_id,room_type,price,availability,image
 28,Suite,500,Available,../public/img/suite.jpg
 29,Single,200,Available,../public/img/single.jpg
 30,Double,250,Available,../public/img/double.jpg
+
+

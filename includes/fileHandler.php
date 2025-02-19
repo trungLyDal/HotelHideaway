@@ -7,10 +7,10 @@ function readRoomsFromCSV($filePath) {
 
         while (($row = fgetcsv($file)) !== FALSE) {
             $rooms[] = [
-                'room_id' => $row[0],
-                'room_type' => $row[1],
-                'price' => $row[2],
-                'availability' => $row[3],
+                'room_id' => isset($row[0]) ? $row[0] : null,
+                'room_type' => isset($row[1]) ? $row[1] : null,
+                'price' => isset($row[2]) ? $row[2] : null,
+                'availability' => isset($row[3]) ? $row[3] : null,
                 'image' => isset($row[4]) ? $row[4] : null
             ];
         }
