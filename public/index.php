@@ -62,7 +62,7 @@ include_once '../templates/header.php';
                                     </thead>
                                     <tbody>
                                         <?php foreach ($filtered_rooms as $room): ?>
-                                            <tr onclick="window.location='index.php?room_id=<?php echo $room['room_id']; ?>';"
+                                            <tr onclick="window.location='index.php?room_id=<?php echo $room['room_id']; ?>#room-details';"
                                                 style="cursor: pointer;"
                                                 class="<?php echo (isset($_GET['room_id']) && $_GET['room_id'] == $room['room_id']) ? 'selected' : ''; ?>">
                                                 <td><?php echo htmlspecialchars($room['room_id']); ?></td>
@@ -99,7 +99,7 @@ include_once '../templates/header.php';
     ?>
 
     <?php if ($room_details): ?>
-        <section class="page-section cta">
+        <section class="page-section cta" id = "room-details">
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
                     <h2>Room Details</h2>
