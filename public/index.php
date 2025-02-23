@@ -61,20 +61,24 @@ include_once '../templates/header.php';
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($filtered_rooms as $room): ?>
-                                            <tr onclick="window.location='index.php?room_id=<?php echo $room['room_id']; ?>#room-details';"
-                                                style="cursor: pointer;"
-                                                class="<?php echo (isset($_GET['room_id']) && $_GET['room_id'] == $room['room_id']) ? 'selected' : ''; ?>">
-                                                <td><?php echo htmlspecialchars($room['room_id']); ?></td>
-                                                <td><?php echo htmlspecialchars($room['room_type']); ?></td>
-                                                <td><?php echo htmlspecialchars("$" . number_format($room['price'], 2)); ?></td>
-                                                <td><?php echo htmlspecialchars($room['availability']); ?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
+    <?php foreach ($filtered_rooms as $room): ?>
+        <tr onclick="window.location='index.php?room_id=<?php echo $room['room_id']; ?>#room-details';"
+            style="cursor: pointer;"
+            class="<?php echo (isset($_GET['room_id']) && $_GET['room_id'] == $room['room_id']) ? 'selected' : ''; ?>">
+            <td><?php echo htmlspecialchars($room['room_id']); ?></td>
+            <td><?php echo htmlspecialchars($room['room_type']); ?></td>
+            <td><?php echo htmlspecialchars("$" . number_format($room['price'], 2)); ?></td>
+            <td class="availability <?php echo trim(strtolower($room['availability'])) === 'booked' ? 'booked' : 'available'; ?>">
+    <?php echo htmlspecialchars($room['availability']); ?>
+</td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
                                 </table>
+                                <a href="#search" class="btn btn-primary">Back to Search</a>
                             <?php else: ?>
                                 <p>No available rooms found for the selected room type.</p>
+                                <a href="#search" class="btn btn-primary">Back to Search</a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -112,8 +116,13 @@ include_once '../templates/header.php';
                     <p><strong>Room ID:</strong> <?php echo htmlspecialchars($room_details['room_id']); ?></p>
                     <p><strong>Room Type:</strong> <?php echo htmlspecialchars($room_details['room_type']); ?></p>
                     <p><strong>Price:</strong> $<?php echo htmlspecialchars($room_details['price']); ?>/night</p>
-                    <p><strong>Availability:</strong> <?php echo htmlspecialchars($room_details['availability']); ?></p>
-                    <a href="#search" class="btn btn-primary">Back to Search</a>
+                    <p>
+                    <strong>Availability:</strong>
+                    <span class="availability <?php echo trim(strtolower($room_details['availability'])) === 'booked' ? 'booked' : 'available'; ?>">
+    <?php echo htmlspecialchars($room_details['availability']); ?>
+</span>
+                    </p>                   
+                <a href="#search" class="btn btn-primary">Back to Search</a>
                 </div>
             </div>
         </section>

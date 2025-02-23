@@ -11049,3 +11049,26 @@ html {
   scroll-behavior: smooth;
 }
 
+.availability {
+  font-weight: bold; 
+}
+
+.availability.booked {
+  color: red;
+}
+
+.availability.available {
+  color: green;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+table tr td.availability.booked { 
+  color: red !important;  
+}
+
+table tr td.availability.available{ 
+  color: green !important;  
+}
