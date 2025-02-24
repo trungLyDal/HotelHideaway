@@ -8,6 +8,78 @@ if (isset($_GET['room_type'])) {
     $filtered_rooms = filterRoomsByType($rooms, $selected_room_type);
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
+    $name = htmlspecialchars(trim($_POST['guest_name']));
+    $room_id = intval($_POST['room_id']);
+    $room_type = htmlspecialchars(trim($_POST['room_type']));
+    $checkin_date = htmlspecialchars(trim($_POST['checkin_date']));
+    $checkout_date = htmlspecialchars(trim($_POST['checkout_date']));
+    
+
+    $errors = [];
+
+    if (empty($name)) {
+        $errors[] = "Name is required.";
+    }
+
+    if (empty($checkin_date)) {
+        $errors[] = "Check-in date is required.";
+    }
+
+    if (empty($checkout_date)) {
+        $errors[] = "Check-out date is required.";
+    }
+
+    if (!isDateValid($checkin_date) || !isDateValid($checkout_date)) { 
+        $errors[] = "Invalid date format. Use YYYY-MM-DD.";
+    }
+
+    if (!empty($checkin_date) && !empty($checkout_date)) {
+        $checkin_timestamp = strtotime($checkin_date);
+        $checkout_timestamp = strtotime($checkout_date);
+    
+        if ($checkin_timestamp !== false && $checkout_timestamp !== false) {
+            if ($checkin_timestamp >= $checkout_timestamp) {
+                $errors[] = "Check-out date must be after check-in date.";
+            }
+        } else {
+            $errors[] = "Invalid date format.";
+        }
+    }
+
+    $rooms = readRoomsFromCSV('../data/rooms.csv');
+    $room_details = null;
+    foreach ($rooms as $room) {
+        if ($room['room_id'] == $room_id) {
+            $room_details = $room;
+            break;
+        }
+    }
+
+    if ($room_details === null) {  
+        $errors[] = "Invalid room ID.";
+    } else if (strtolower(trim($room_details['availability'])) !== 'available') {
+        $errors[] = "Room is not available";
+    }
+
+    if (empty($errors)) {
+        $booking_data = [
+            'name' => $name,
+            'room_id' => $room_id,
+            'room_type' => $room_type,
+            'checkin_date' => $checkin_date,
+            'checkout_date' => $checkout_date,
+        ];
+
+        if (appendBookingToCSV($booking_data, '../data/bookings.csv')) {
+            $success_message = "Booking successful!";
+            unset($name, $checkin_date, $checkout_date); 
+        } else {
+            $errors[] = "Error saving booking. Please try again.";
+        }
+    }
+}
+
 include_once '../templates/header.php';
 ?>
 
@@ -100,37 +172,135 @@ include_once '../templates/header.php';
     }
     ?>
 
-    <?php if ($room_details): ?>
-        <section class="page-section cta" id = "room-details">
+<?php if ($room_details): ?>
+        <section class="page-section cta" id="room-details">
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
-                    <h2 class="section-heading mb-4">
-                        <span class="section-heading-upper">Search Result</span>
-                        <span class="section-heading-lower">Available Room</span>
-                    </h2>
-                    <img src="<?php echo htmlspecialchars($room_details['image']); ?>"
-                         alt="<?php echo htmlspecialchars($room_details['room_type']); ?>"
-                         class="img-fluid mb-3">
-                    <p><strong>Room ID:</strong> <?php echo htmlspecialchars($room_details['room_id']); ?></p>
-                    <p><strong>Room Type:</strong> <?php echo htmlspecialchars($room_details['room_type']); ?></p>
-                    <p><strong>Price:</strong> $<?php echo htmlspecialchars($room_details['price']); ?>/night</p>
-                    <p>
-                        <strong>Availability:</strong>
-                        <span class="availability <?php echo trim(strtolower($room_details['availability'])) === 'booked' ? 'booked' : 'available'; ?>">
-                            <?php echo htmlspecialchars($room_details['availability']); ?>
-                        </span>
-                    </p>
+                    <h2>Room Details</h2>
+                    <img src="<?php echo htmlspecialchars($room_details['image']); ?>" alt="<?php echo htmlspecialchars($room_details['room_type']); ?>" class="img-fluid mb-3">
+                    <div class="table-container">  <table class="table table-bordered">
+                            <tr>
+                                <th>Room ID</th>
+                                <td><?php echo htmlspecialchars($room_details['room_id']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Room Type</th>
+                                <td><?php echo htmlspecialchars($room_details['room_type']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>$<?php echo htmlspecialchars($room_details['price']); ?>/night</td>
+                            </tr>
+                            <tr>
+                                <th>Availability</th>
+                                <td>
+                                    <span class="availability <?php echo trim(strtolower($room_details['availability'])) === 'booked' ? 'booked' : 'available'; ?>">
+                                        <?php echo htmlspecialchars($room_details['availability']); ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <a href="#search" class="btn btn-primary">Back to Search</a>
-                    <?php
-                    if ($room_details['availability'] === 'Available'): ?>
-                    <a href="#" class="btn btn-primary">Book Now</a>
+
+                    <?php if (strtolower(trim($room_details['availability'])) === 'available'): ?>
+                        <section class="page-section clearfix">
+                            <div id="booking-form-container">
+                                <h2>Book This Room</h2>  
+                                <form id="booking-form" action="index.php#room-details" method="POST">
+                                    <input type="hidden" name="booking_submit" value="true">
+                                    <input type="hidden" name="room_id" value="<?php echo $room_details['room_id']; ?>">
+                                    <input type="hidden" name="room_type" value="<?php echo $room_details['room_type']; ?>">
+
+                                    <label for="guest_name">Name:</label>
+                                    <input type="text" name="guest_name" id="guest_name" value="<?php echo isset($name) ? $name : ''; ?>" required><br><br>
+
+                                    <label for="checkin_date">Check-in Date:</label>
+                                    <input type="date" name="checkin_date" id="checkin_date" value="<?php echo isset($checkin_date) ? $checkin_date : ''; ?>" required><br><br>
+
+                                    <label for="checkout_date">Check-out Date:</label>
+                                    <input type="date" name="checkout_date" id="checkout_date" value="<?php echo isset($checkout_date) ? $checkout_date : ''; ?>" required><br><br>
+
+                                
+                                    <button class="btn btn-primary" type="submit" name ="booking_submit">Submit Booking</button>
+                                    <button type="button" class="btn btn-secondary cancel-booking">Cancel</button>
+                                </form>
+                            </div>
+                        </section>
                     <?php endif; ?>
                 </div>
             </div>
         </section>
     <?php endif; ?>
 <?php endif; ?>
-
 <?php
 include_once '../templates/footer.php';
 ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const bookingForm = document.getElementById('booking-form');
+    const checkinDateInput = document.getElementById('checkin_date');
+    const checkoutDateInput = document.getElementById('checkout_date');
+    const cancelButton = document.querySelector('.cancel-booking');
+
+
+    if (!bookingForm) {
+        console.error("Booking form not found!");
+        return; 
+    }
+
+    if (!checkinDateInput) {
+        console.error("Check-in input not found!");
+        return;
+    }
+
+    if (!checkoutDateInput) {
+        console.error("Check-out input not found!");
+        return;
+    }
+
+        if (cancelButton) {
+        cancelButton.addEventListener('click', function() {
+            window.location.href = "#search";
+        });
+    }
+
+    bookingForm.addEventListener('submit', function (event) {
+        const checkInDateStr = checkinDateInput.value;
+        const checkOutDateStr = checkoutDateInput.value;
+
+        if (!checkInDateStr || !checkOutDateStr) {
+            alert("Please select both check-in and check-out dates.");
+            event.preventDefault();
+            return;
+        }
+
+        const [checkInYear, checkInMonth, checkInDay] = checkInDateStr.split('-').map(Number);
+        const [checkOutYear, checkOutMonth, checkOutDay] = checkOutDateStr.split('-').map(Number);
+
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth() + 1;
+        const currentDay = today.getDate();
+        console.log(checkInYear, checkInMonth, checkInDay);
+        console.log(checkOutYear, checkOutMonth, checkOutDay);
+
+        if (
+            checkInYear > checkOutYear ||
+            (checkInYear === checkOutYear && checkInMonth > checkOutMonth) ||
+            (checkInYear === checkOutYear && checkInMonth === checkOutMonth && checkInDay > checkOutDay) ||
+            checkInYear < currentYear ||
+            (checkInYear === currentYear && checkInMonth < currentMonth) ||
+            (checkInYear === currentYear && checkInMonth === currentMonth && checkInDay < currentDay) ||
+            checkOutYear < currentYear ||
+            (checkOutYear === currentYear && checkOutMonth < currentMonth) ||
+            (checkOutYear === currentYear && checkOutMonth === currentMonth && checkOutDay < currentDay)
+        ) {
+            alert('Check-out date must be after check-in date and both dates must be today or later.');
+            event.preventDefault();
+        }
+    });
+
+});
+</script>

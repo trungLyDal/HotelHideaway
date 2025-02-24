@@ -11028,20 +11028,6 @@ p {
   font-size: 1.2rem;
 }
 
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure it appears above other content */
-}
-
 
 
 
@@ -11071,4 +11057,26 @@ table tr td.availability.booked {
 
 table tr td.availability.available{ 
   color: green !important;  
+}
+
+.table-container { 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  width: fit-content; 
+  margin: 0 auto;
+}
+
+.table-bordered { 
+  margin: 20px 0; 
+  border-collapse: collapse;
+  width: 100%;
+  border-color: #04414d;
+}
+
+
+.back-to-search {
+  display: block; 
+  margin: 20px auto 0; 
+  text-align: center;
 }
