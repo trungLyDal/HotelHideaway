@@ -221,9 +221,9 @@ include_once '../templates/header.php';
                                     <label for="checkout_date">Check-out Date:</label>
                                     <input type="date" name="checkout_date" id="checkout_date" value="<?php echo isset($checkout_date) ? $checkout_date : ''; ?>" required><br><br>
 
-                                
-                                    <button class="btn btn-primary" type="submit" name ="booking_submit">Submit Booking</button>
                                     <button type="button" class="btn btn-secondary cancel-booking">Cancel</button>
+                                    <button class="btn btn-primary" type="submit" name ="booking_submit">Submit Booking</button>
+                                    
                                 </form>
                             </div>
                         </section>
@@ -260,10 +260,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-        if (cancelButton) {
+    if (cancelButton) {
         cancelButton.addEventListener('click', function() {
             window.location.href = "#search";
-        });
+    });
     }
 
     bookingForm.addEventListener('submit', function (event) {
