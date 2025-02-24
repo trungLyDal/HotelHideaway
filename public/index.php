@@ -289,15 +289,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (
             checkInYear > checkOutYear ||
             (checkInYear === checkOutYear && checkInMonth > checkOutMonth) ||
-            (checkInYear === checkOutYear && checkInMonth === checkOutMonth && checkInDay > checkOutDay) ||
-            checkInYear < currentYear ||
+            (checkInYear === checkOutYear && checkInMonth === checkOutMonth && checkInDay >= checkOutDay) || 
             (checkInYear === currentYear && checkInMonth < currentMonth) ||
-            (checkInYear === currentYear && checkInMonth === currentMonth && checkInDay < currentDay) ||
+            (checkInYear === currentYear && checkInMonth === currentMonth && checkInDay < currentDay) || 
             checkOutYear < currentYear ||
             (checkOutYear === currentYear && checkOutMonth < currentMonth) ||
-            (checkOutYear === currentYear && checkOutMonth === currentMonth && checkOutDay < currentDay)
+            (checkOutYear === currentYear && checkOutMonth === currentMonth && checkOutDay < currentDay) 
         ) {
-            alert('Check-out date must be after check-in date and both dates must be today or later.');
+            alert('Check-out date must be after or same as check-in date and both dates must be today or later.');
             event.preventDefault();
         }
     });
