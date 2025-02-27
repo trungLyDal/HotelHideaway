@@ -91,6 +91,8 @@ include_once '../templates/header.php';
                                 <span class="section-heading-lower">Available Rooms</span>
                             </h2>
                             <?php if (!empty($filtered_rooms)): ?>
+                                <div class="table-container">  
+
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -115,6 +117,7 @@ include_once '../templates/header.php';
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
+                                </div>
                                 <a href="#search" class="btn btn-primary">Back to Search</a>
                             <?php else: ?>
                                 <p>No available rooms found for the selected room type.</p>
