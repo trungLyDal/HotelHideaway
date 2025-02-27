@@ -1,17 +1,6 @@
 name,room_id,room_type,check_in,check_out
-
-"GIA TRUNG LY",25,Double,2025-02-23,2025-02-27
-
-"Dalhousie University",21,Single,2025-02-23,2025-02-24
-"Jun Ly",21,Single,2025-02-23,2025-02-24
-"Jun Ly",21,Single,2025-02-23,2025-02-24
-"Jun Ly",21,Single,2025-02-23,2025-02-24
-"snoop dog",19,Single,2025-02-23,2025-02-24
-"GIA TRUNG LY",15,Double,2025-02-27,2025-02-28
-"Vy Tran",10,Double,2025-02-27,2025-03-01
-"Huy Huynh",6,Single,2025-02-27,2025-03-01
-"Dalhousie University",19,Single,2025-02-27,2025-02-28
-"Dalhousie University",19,Single,2025-02-27,2025-02-28
-"Jun Ly",11,Single,2025-02-27,2025-02-28
-"Vy Tran",21,Single,2025-02-27,2025-03-01
-"Jun Ly",19,Single,2025-02-27,2025-02-28
+John Doe,1,single,2018-01-01,2018-01-03
+"Vy Tran",26,Single,2025-02-27,2025-03-01
+"Huy Huynh",1,Single,2025-02-27,2025-03-08
+"Vy Tran",19,Single,2025-02-27,2025-02-28
+"Vy Tran",19,Single,2025-02-27,2025-02-28

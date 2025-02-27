@@ -2,13 +2,15 @@
 require_once '../includes/fileHandler.php';
 require_once '../includes/validator.php';
 
+$errors = [];
+$success_message = '';
+
+
 if (isset($_GET['room_type'])) {
     $selected_room_type = $_GET['room_type'];
     $rooms = readRoomsFromCSV('../data/rooms.csv');
     $filtered_rooms = filterRoomsByType($rooms, $selected_room_type);
 }
-
-$errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
     $name = htmlspecialchars(trim($_POST['guest_name']));
@@ -16,8 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
     $room_type = htmlspecialchars(trim($_POST['room_type']));
     $checkin_date = htmlspecialchars(trim($_POST['checkin_date']));
     $checkout_date = htmlspecialchars(trim($_POST['checkout_date']));
-    
-
 
     $rooms = readRoomsFromCSV('../data/rooms.csv');
     $room_details = null;
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
         }
     }
 
-    if ($room_details === null) {  
+    if ($room_details === null) {
         $errors[] = "Invalid room ID.";
     } else if (strtolower(trim($room_details['availability'])) !== 'available') {
         $errors[] = "Room is not available";
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
 
         if (appendBookingToCSV($booking_data, '../data/bookings.csv')) {
             $success_message = "Booking successful!";
-            unset($name, $checkin_date, $checkout_date); 
+            unset($name, $checkin_date, $checkout_date);
         } else {
             $errors[] = "Error saving booking. Please try again.";
         }
@@ -64,7 +64,6 @@ include_once '../templates/header.php';
                     <span class="section-heading-upper">Find</span>
                     <span class="section-heading-lower">Your Room</span>
                 </h2>
-                <!-- Search Form -->
                 <form action="#results" method="GET" class="mb-3">
                     <label for="room_type" class="form-label">Select Room Type:</label>
                     <select name="room_type" id="room_type" class="form-select" required>
@@ -91,7 +90,6 @@ include_once '../templates/header.php';
                                 <span class="section-heading-upper">Search Results</span>
                                 <span class="section-heading-lower">Available Rooms</span>
                             </h2>
-
                             <?php if (!empty($filtered_rooms)): ?>
                                 <table class="table table-striped">
                                     <thead>
@@ -144,11 +142,11 @@ include_once '../templates/header.php';
     }
     ?>
 
-<?php if ($room_details): ?>
+    <?php if ($room_details): ?>
         <section class="page-section cta" id="room-details">
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
-                    <h1 id = room-details>Room Details</h1>
+                    <h1 id="room-details">Room Details</h1>
                     <img src="<?php echo htmlspecialchars($room_details['image']); ?>" alt="<?php echo htmlspecialchars($room_details['room_type']); ?>" class="img-fluid mb-3">
                     <div class="table-container">  
                         <table class="table table-bordered">
@@ -195,17 +193,35 @@ include_once '../templates/header.php';
                                     <input type="date" name="checkout_date" id="checkout_date" value="<?php echo isset($checkout_date) ? $checkout_date : ''; ?>" required><br><br>
 
                                     <button type="button" class="btn btn-secondary cancel-booking">Cancel</button>
-                                    <button class="btn btn-primary" type="submit" name ="booking_submit">Submit Booking</button>
-                                    
+                                    <button class="btn btn-primary" type="submit" name="booking_submit">Submit Booking</button>
                                 </form>
                             </div>
                         </section>
                     <?php endif; ?>
                 </div>
             </div>
+
+            <div class="modal fade" id="bookingConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="bookingConfirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bookingConfirmationModalLabel">Booking Confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="bookingConfirmationModalBody"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id = "hideModal" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="modalGoHome">Confirm and Go</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     <?php endif; ?>
 <?php endif; ?>
+
 <?php
 include_once '../templates/footer.php';
 ?>
@@ -216,7 +232,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkinDateInput = document.getElementById('checkin_date');
     const checkoutDateInput = document.getElementById('checkout_date');
     const cancelButton = document.querySelector('.cancel-booking');
-
 
     if (!bookingForm) {
         console.error("Booking form not found!");
@@ -236,14 +251,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cancelButton) {
         cancelButton.addEventListener('click', function() {
             window.location.href = "#search";
-    });
+        });
     }
 
     bookingForm.addEventListener('submit', function (event) {
         const checkInDateStr = checkinDateInput.value;
         const checkOutDateStr = checkoutDateInput.value;
-
-    
 
         const [checkInYear, checkInMonth, checkInDay] = checkInDateStr.split('-').map(Number);
         const [checkOutYear, checkOutMonth, checkOutDay] = checkOutDateStr.split('-').map(Number);
@@ -252,8 +265,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1;
         const currentDay = today.getDate();
-        console.log(checkInYear, checkInMonth, checkInDay);
-        console.log(checkOutYear, checkOutMonth, checkOutDay);
 
         if (
             checkInYear > checkOutYear ||
@@ -268,7 +279,33 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Check-out date must be after or same as check-in date and both dates must be today or later.');
             event.preventDefault();
         }
-    });
 
+        event.preventDefault(); 
+
+        const name = document.getElementById('guest_name').value;
+        const room_id = document.querySelector('input[name="room_id"]').value;
+        const room_type = document.querySelector('input[name="room_type"]').value;
+        const checkin_date = document.getElementById('checkin_date').value;
+        const checkout_date = document.getElementById('checkout_date').value;
+
+        let confirmationMessage = `
+            <p><strong>Guest Name:</strong> ${name}</p>
+            <p><strong>Room ID:</strong> ${room_id}</p>
+            <p><strong>Room Type:</strong> ${room_type}</p>
+            <p><strong>Check-in Date:</strong> ${checkin_date}</p>
+            <p><strong>Check-out Date:</strong> ${checkout_date}</p>
+        `;
+
+        document.getElementById('bookingConfirmationModalBody').innerHTML = confirmationMessage;
+
+        $('#bookingConfirmationModal').modal('show');
+
+        document.getElementById("modalGoHome").addEventListener('click', function(){
+            bookingForm.submit();
+        })
+        document.getElementById("hideModal").addEventListener('click', function(){
+            $('#bookingConfirmationModal').modal('hide');
+        })
+    });
 });
 </script>
