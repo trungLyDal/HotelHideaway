@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/fileHandler.php';
 require_once '../includes/validator.php';
-
+session_start();
 $errors = [];
 $success_message = '';
 
@@ -42,10 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
             'checkin_date' => $checkin_date,
             'checkout_date' => $checkout_date,
         ];
+       
 
         if (appendBookingToCSV($booking_data, '../data/bookings.csv')) {
-            $success_message = "Booking successful!";
+            $_SESSION['success_message'] = "Booking successful!";
             unset($name, $checkin_date, $checkout_date);
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit;
         } else {
             $errors[] = "Error saving booking. Please try again.";
         }
@@ -209,7 +212,7 @@ include_once '../templates/header.php';
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="bookingConfirmationModalLabel">Booking Confirmation</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" id="hideModal" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -281,6 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ) {
             alert('Check-out date must be after or same as check-in date and both dates must be today or later.');
             event.preventDefault();
+            return;
         }
 
         event.preventDefault(); 
@@ -292,11 +296,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkout_date = document.getElementById('checkout_date').value;
 
         let confirmationMessage = `
-            <p><strong>Guest Name:</strong> ${name}</p>
-            <p><strong>Room ID:</strong> ${room_id}</p>
-            <p><strong>Room Type:</strong> ${room_type}</p>
-            <p><strong>Check-in Date:</strong> ${checkin_date}</p>
-            <p><strong>Check-out Date:</strong> ${checkout_date}</p>
+        <p>
+            <strong>Guest Name:</strong> ${name}
+            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
+        
+        </p>            
+            <p><strong>Room ID:</strong> ${room_id}
+                        <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
+</p>
+            <p><strong>Room Type:</strong> ${room_type}            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
+</p>
+            <p><strong>Check-in Date:</strong> ${checkin_date}            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
+</p>
+            <p><strong>Check-out Date:</strong> ${checkout_date}            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
+</p>
         `;
 
         document.getElementById('bookingConfirmationModalBody').innerHTML = confirmationMessage;
