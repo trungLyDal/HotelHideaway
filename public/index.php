@@ -8,6 +8,8 @@ if (isset($_GET['room_type'])) {
     $filtered_rooms = filterRoomsByType($rooms, $selected_room_type);
 }
 
+$errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
     $name = htmlspecialchars(trim($_POST['guest_name']));
     $room_id = intval($_POST['room_id']);
@@ -16,36 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
     $checkout_date = htmlspecialchars(trim($_POST['checkout_date']));
     
 
-    $errors = [];
-
-    if (empty($name)) {
-        $errors[] = "Name is required.";
-    }
-
-    if (empty($checkin_date)) {
-        $errors[] = "Check-in date is required.";
-    }
-
-    if (empty($checkout_date)) {
-        $errors[] = "Check-out date is required.";
-    }
-
-    if (!isDateValid($checkin_date) || !isDateValid($checkout_date)) { 
-        $errors[] = "Invalid date format. Use YYYY-MM-DD.";
-    }
-
-    if (!empty($checkin_date) && !empty($checkout_date)) {
-        $checkin_timestamp = strtotime($checkin_date);
-        $checkout_timestamp = strtotime($checkout_date);
-    
-        if ($checkin_timestamp !== false && $checkout_timestamp !== false) {
-            if ($checkin_timestamp >= $checkout_timestamp) {
-                $errors[] = "Check-out date must be after check-in date.";
-            }
-        } else {
-            $errors[] = "Invalid date format.";
-        }
-    }
 
     $rooms = readRoomsFromCSV('../data/rooms.csv');
     $room_details = null;

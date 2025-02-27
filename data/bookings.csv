@@ -7,3 +7,6 @@ name,room_id,room_type,check_in,check_out
 "Jun Ly",21,Single,2025-02-23,2025-02-24
 "Jun Ly",21,Single,2025-02-23,2025-02-24
 "snoop dog",19,Single,2025-02-23,2025-02-24
+"GIA TRUNG LY",15,Double,2025-02-27,2025-02-28
+"Vy Tran",10,Double,2025-02-27,2025-03-01
+"Huy Huynh",6,Single,2025-02-27,2025-03-01
