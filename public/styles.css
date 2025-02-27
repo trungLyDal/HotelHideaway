@@ -11039,11 +11039,11 @@ html {
   font-weight: bold; 
 }
 
-.availability.booked {
+.availability-rooms.booked {
   color: red;
 }
 
-.availability.available {
+.availability-rooms.available {
   color: green;
 }
 
@@ -11051,12 +11051,14 @@ html {
   background-color: lightblue;
 }
 
-table tr td.availability.booked { 
+table tr td.availability-rooms.booked { 
   color: red !important;  
+  font-weight: bold;
 }
 
-table tr td.availability.available{ 
+table tr td.availability-rooms.available{ 
   color: green !important;  
+  font-weight: bold;
 }
 
 .table-container { 

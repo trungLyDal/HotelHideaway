@@ -110,7 +110,7 @@ include_once '../templates/header.php';
                                                 <td><?php echo htmlspecialchars($room['room_id']); ?></td>
                                                 <td><?php echo htmlspecialchars($room['room_type']); ?></td>
                                                 <td><?php echo htmlspecialchars("$" . number_format($room['price'], 2)); ?></td>
-                                                <td class="availability <?php echo trim(strtolower($room['availability'])) === 'booked' ? 'booked' : 'available'; ?>">
+                                                <td class="availability-rooms <?php echo trim(strtolower($room['availability'])) === 'booked' ? 'booked' : 'available'; ?>">
                                                     <?php echo htmlspecialchars($room['availability']); ?>
                                                 </td>
                                             </tr>
@@ -148,7 +148,7 @@ include_once '../templates/header.php';
         <section class="page-section cta" id="room-details">
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
-                    <h1 id = #room-details>Room Details</h1>
+                    <h1 id = room-details>Room Details</h1>
                     <img src="<?php echo htmlspecialchars($room_details['image']); ?>" alt="<?php echo htmlspecialchars($room_details['room_type']); ?>" class="img-fluid mb-3">
                     <div class="table-container">  
                         <table class="table table-bordered">
