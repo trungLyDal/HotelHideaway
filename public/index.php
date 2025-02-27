@@ -148,9 +148,10 @@ include_once '../templates/header.php';
         <section class="page-section cta" id="room-details">
             <div class="container">
                 <div class="cta-inner bg-faded text-center rounded">
-                    <h2>Room Details</h2>
+                    <h1 id = #room-details>Room Details</h1>
                     <img src="<?php echo htmlspecialchars($room_details['image']); ?>" alt="<?php echo htmlspecialchars($room_details['room_type']); ?>" class="img-fluid mb-3">
-                    <div class="table-container">  <table class="table table-bordered">
+                    <div class="table-container">  
+                        <table class="table table-bordered">
                             <tr>
                                 <th>Room ID</th>
                                 <td><?php echo htmlspecialchars($room_details['room_id']); ?></td>
