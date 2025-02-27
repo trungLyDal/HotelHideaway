@@ -242,11 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkInDateStr = checkinDateInput.value;
         const checkOutDateStr = checkoutDateInput.value;
 
-        if (!checkInDateStr || !checkOutDateStr) {
-            alert("Please select both check-in and check-out dates.");
-            event.preventDefault();
-            return;
-        }
+    
 
         const [checkInYear, checkInMonth, checkInDay] = checkInDateStr.split('-').map(Number);
         const [checkOutYear, checkOutMonth, checkOutDay] = checkOutDateStr.split('-').map(Number);
