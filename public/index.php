@@ -48,7 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
         if (appendBookingToCSV($booking_data, '../data/bookings.csv')) {
             $_SESSION['success_message'] = "Booking successful!";
             unset($name, $checkin_date, $checkout_date);
-            header('Location: ' . $_SERVER['REQUEST_URI']);
+            $redirectUrl = "confirmation.php?name=" . urlencode($_POST['guest_name']) . "&room_id=" . urlencode($_POST['room_id']) . "&room_type=" . urlencode($_POST['room_type']) . "&checkin_date=" . urlencode($_POST['checkin_date']) . "&checkout_date=" . urlencode($_POST['checkout_date']);
+
+            header('Location: ' . $redirectUrl);
             exit;
         } else {
             $errors[] = "Error saving booking. Please try again.";
@@ -334,16 +336,9 @@ include_once '../templates/header.php';
             if (confirmButton.hasAttribute('disabled')) {
                 alert("Please confirm all details before proceeding");
             } else {
-                const name = document.getElementById('guest_name').value;
-                const room_id = document.querySelector('input[name="room_id"]').value;
-                const room_type = document.querySelector('input[name="room_type"]').value;
-                const checkin_date = document.getElementById('checkin_date').value;
-                const checkout_date = document.getElementById('checkout_date').value;
-
-                const redirectUrl = `confirmation.php?name=${encodeURIComponent(name)}&room_id=${encodeURIComponent(room_id)}&room_type=${encodeURIComponent(room_type)}&checkin_date=${encodeURIComponent(checkin_date)}&checkout_date=${encodeURIComponent(checkout_date)}`;
-
-                window.location.href = redirectUrl;
+                bookingForm.submit();
                 console.log("Booking confirmed and redirecting to confirmation page");
+                
             }
         });
             
