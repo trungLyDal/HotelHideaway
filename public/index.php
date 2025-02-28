@@ -330,15 +330,20 @@ include_once '../templates/header.php';
 
         updateConfirmButtonState();
 
-        confirmButtonWrapper.addEventListener('click', function(){
-            if(confirmButton.hasAttribute('disabled'))
-            {
+        confirmButtonWrapper.addEventListener('click', function() {
+            if (confirmButton.hasAttribute('disabled')) {
                 alert("Please confirm all details before proceeding");
-            }
-            else
-            {
-                bookingForm.submit();
-                console.log("Booking confirmed");
+            } else {
+                const name = document.getElementById('guest_name').value;
+                const room_id = document.querySelector('input[name="room_id"]').value;
+                const room_type = document.querySelector('input[name="room_type"]').value;
+                const checkin_date = document.getElementById('checkin_date').value;
+                const checkout_date = document.getElementById('checkout_date').value;
+
+                const redirectUrl = `confirmation.php?name=${encodeURIComponent(name)}&room_id=${encodeURIComponent(room_id)}&room_type=${encodeURIComponent(room_type)}&checkin_date=${encodeURIComponent(checkin_date)}&checkout_date=${encodeURIComponent(checkout_date)}`;
+
+                window.location.href = redirectUrl;
+                console.log("Booking confirmed and redirecting to confirmation page");
             }
         });
             
