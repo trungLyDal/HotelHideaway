@@ -219,7 +219,9 @@ include_once '../templates/header.php';
                         <div class="modal-body" id="bookingConfirmationModalBody"></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" id = "hideModal" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="modalGoHome">Confirm and Go</button>
+                            <div id="confirmButtonWrapper" class="disabled-wrapper">
+                                <button type="button" class="btn btn-primary" id="modalGoHome">Confirm and Go</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -296,32 +298,58 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkout_date = document.getElementById('checkout_date').value;
 
         let confirmationMessage = `
-        <p>
-            <strong>Guest Name:</strong> ${name}
-            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
-        
-        </p>            
-            <p><strong>Room ID:</strong> ${room_id}
-                        <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
-</p>
-            <p><strong>Room Type:</strong> ${room_type}            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
-</p>
-            <p><strong>Check-in Date:</strong> ${checkin_date}            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
-</p>
-            <p><strong>Check-out Date:</strong> ${checkout_date}            <input class="form-check-input" type="checkbox" id="checkbox1" value="meow">
-</p>
-        `;
+    <p><strong>Guest Name:</strong> ${name} <input class="form-check-input" type="checkbox" id="checkbox1" value="meow"></p>
+    <p><strong>Room ID:</strong> ${room_id} <input class="form-check-input" type="checkbox" id="checkbox2" value="meow"></p>
+    <p><strong>Room Type:</strong> ${room_type} <input class="form-check-input" type="checkbox" id="checkbox3" value="meow"></p>
+    <p><strong>Check-in Date:</strong> ${checkin_date} <input class="form-check-input" type="checkbox" id="checkbox4" value="meow"></p>
+    <p><strong>Check-out Date:</strong> ${checkout_date} <input class="form-check-input" type="checkbox" id="checkbox5" value="meow"></p>
+`;
 
         document.getElementById('bookingConfirmationModalBody').innerHTML = confirmationMessage;
 
         $('#bookingConfirmationModal').modal('show');
 
-        document.getElementById("modalGoHome").addEventListener('click', function(){
-            bookingForm.submit();
+        const confirmButton = document.getElementById('modalGoHome');
+        const confirmButtonWrapper = document.getElementById('confirmButtonWrapper');
+
+        function checkBoxesChecked() 
+        {        
+            const checkboxes = document.querySelectorAll('.form-check-input');
+            return Array.from(checkBoxes).every(checkBox => checkBox.checked);
+        }
+        function updateConfirmButtonState() {
+            if (checkBoxesChecked()) {
+                confirmButtonWrapper.classList.remove('disabled-wrapper');
+                confirmButton.removeAttribute('disabled');
+                } 
+            else {
+                confirmButton.setAttribute('disabled', 'disabled');
+                confirmButtonWrapper.classList.add('disabled-wrapper');
+            }
+}       const checkBoxes = document.querySelectorAll('.form-check-input'); 
+
+        checkBoxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateConfirmButtonState);
+});
+
+        updateConfirmButtonState();
+
+        confirmButtonWrapper.addEventListener('click', function(){
+            if(confirmButton.hasAttribute('disabled'))
+            {
+                alert("Please confirm all details before proceeding");
+            }
+            else
+            {
+                bookingForm.submit();
+                console.log("Booking confirmed");
+            }
+        });
+            
         })
         document.getElementById("hideModal").addEventListener('click', function(){
             $('#bookingConfirmationModal').modal('hide');
         })
     });
-});
+
 </script>
