@@ -22,6 +22,9 @@ Hotel Hideaway Booking System - This application is a web-based hotel booking sy
 * [Form Validation](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation) - Form Validation
 * [Modal manipulation](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) - Show Modal
 * [Session](https://www.php.net/manual/en/book.session.php) - Session to prevent double submission
+* [POST](https://www.php.net/manual/en/reserved.variables.post.php)
+* [urlencode](https://www.php.net/manual/en/function.urlencode.php)
+
 
 **Steps to Set Up and Run the Application**
 
