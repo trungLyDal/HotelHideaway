@@ -2,13 +2,22 @@
 require_once '../includes/fileHandler.php';
 require_once '../includes/validator.php';
 session_start();
+
 $errors = [];
 $success_message = '';
+$rooms = readRoomsFromCSV('../data/rooms.csv'); 
 
+function getRoomDetails($rooms, $room_id) {
+    foreach ($rooms as $room) {
+        if ($room['room_id'] == $room_id) {
+            return $room;
+        }
+    }
+    return null;
+}
 
 if (isset($_GET['room_type'])) {
     $selected_room_type = $_GET['room_type'];
-    $rooms = readRoomsFromCSV('../data/rooms.csv');
     $filtered_rooms = filterRoomsByType($rooms, $selected_room_type);
 }
 
@@ -19,18 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
     $checkin_date = htmlspecialchars(trim($_POST['checkin_date']));
     $checkout_date = htmlspecialchars(trim($_POST['checkout_date']));
 
-    $rooms = readRoomsFromCSV('../data/rooms.csv');
-    $room_details = null;
-    foreach ($rooms as $room) {
-        if ($room['room_id'] == $room_id) {
-            $room_details = $room;
-            break;
-        }
-    }
+    $room_details = getRoomDetails($rooms, $room_id);
 
     if ($room_details === null) {
         $errors[] = "Invalid room ID.";
-    } else if (strtolower(trim($room_details['availability'])) !== 'available') {
+    } elseif (strtolower(trim($room_details['availability'])) !== 'available') {
         $errors[] = "Room is not available";
     }
 
@@ -42,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
             'checkin_date' => $checkin_date,
             'checkout_date' => $checkout_date,
         ];
-       
 
         if (appendBookingToCSV($booking_data, '../data/bookings.csv')) {
             $_SESSION['success_message'] = "Booking successful!";
@@ -229,13 +230,8 @@ include_once '../templates/header.php';
         </section>
     <?php endif; ?>
 <?php endif; ?>
-
-<?php
-include_once '../templates/footer.php';
-?>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const bookingForm = document.getElementById('booking-form');
     const checkinDateInput = document.getElementById('checkin_date');
     const checkoutDateInput = document.getElementById('checkout_date');
@@ -352,4 +348,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     });
 
+
 </script>
+<?php
+include_once '../templates/footer.php';
+?>
+

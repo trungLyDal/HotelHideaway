@@ -18,7 +18,10 @@ Hotel Hideaway Booking System - This application is a web-based hotel booking sy
 * [Hotel Vilnia Classic Single Room](https://hotelvilnia.lt/accommodation/classic-single-room/) - Room Detail Inspiration
 * [The Chatwal Suite](https://www.thechatwalny.com/stay/chatwal-suite/) - Room Detail Inspiration
 * ChatGPT AI - Used to generate the `rooms.csv` file.
-* 
+* [Dates and Times](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) - Get Date and Time
+* [Form Validation](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation) - Form Validation
+* [Modal manipulation](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) - Show Modal
+* [Session](https://www.php.net/manual/en/book.session.php) - Session to prevent double submission
 
 **Steps to Set Up and Run the Application**
 
@@ -39,7 +42,9 @@ Hotel Hideaway Booking System - This application is a web-based hotel booking sy
 * **Booking System:**
     * Users can book available rooms by providing their name, check-in date, and check-out date.
     * **Confirmation Page:** A modal confirmation page will appear after the user clicks the submit button, that allows the user to confirm the information before submitting.
-    * **Confirmation Checklist:** Before the user can submit the form on the confirmation modal, the user must check all the checkboxes.
+
+**Creative Element: User Story 5**
+    **Confirmation Checklist:** Before the user can submit the form on the confirmation modal, the user must check all the checkboxes.
 * **Double Submission Prevention:**
     * Implemented session-based prevention to avoid double form submissions on page reload.
 * **Data Storage:**

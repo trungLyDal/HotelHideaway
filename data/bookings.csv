@@ -1,28 +1,5 @@
 name,room_id,room_type,check_in,check_out
 John Doe,1,single,2018-01-01,2018-01-03
-"Vy Tran",26,Single,2025-02-27,2025-03-01
-"Huy Huynh",1,Single,2025-02-27,2025-03-08
-"Vy Tran",19,Single,2025-02-27,2025-02-28
-"Vy Tran",19,Single,2025-02-27,2025-02-28
-"John Cena",11,Single,2025-02-27,2025-03-01
-Raghav,6,Single,2025-02-27,2025-03-02
-Raghav,6,Single,2025-02-27,2025-03-02
-"Vy Tran",29,Single,2025-02-28,2025-03-08
-"Vy Tran",29,Single,2025-02-28,2025-03-08
-"Vy Tran",6,Single,2025-03-01,2025-03-05
-"GIA TRUNG LY",15,Double,2025-02-27,2025-02-28
-"Jun Ly",10,Double,2025-02-28,2025-03-07
-"Jun Ly",29,Single,2025-02-27,2025-02-28
-"Dalhousie University",6,Single,2025-02-27,2025-02-28
-"GIA TRUNG LY",19,Single,2025-02-27,2025-02-26
-"Vy Tran",15,Double,2025-02-27,2025-02-28
-"GIA TRUNG LY",11,Single,2025-02-27,2025-02-28
-"Jun Ly",14,Single,2025-02-27,2025-02-28
-"Huy Huynh",11,Single,2025-02-27,2025-02-28
-"Vy Tran",15,Double,2025-02-27,2025-02-28
-"Vy Tran",6,Single,2025-02-28,2025-03-01
-"Huy Huynh",11,Single,2025-02-27,2025-02-28
-"Vy Tran",11,Single,2025-02-27,2025-02-28
-"Jun Ly",6,Single,2025-02-28,2025-03-01
-"Vy Tran",11,Single,2025-02-27,2025-02-28
-"Dalhousie University",11,Single,2025-02-27,2025-03-01
+
+"Dalhousie University",26,Single,2025-02-27,2025-02-28
+"Jun Ly",6,Single,2025-02-27,2025-02-28
