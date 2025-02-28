@@ -21,7 +21,7 @@ include_once '../templates/header.php';
 ?>
 
 <section class="page-section cta">
-    <div class="container">
+    <div class="container" id = "confirmation">
         <div class="cta-inner bg-faded text-center rounded">
             <h2>Booking Confirmation</h2>
             <?php if ($room_details): ?>

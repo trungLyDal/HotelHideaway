@@ -1,8 +1,5 @@
 name,room_id,room_type,check_in,check_out
 John Doe,1,single,2018-01-01,2018-01-03
-
-Raghav,3,Suite,2025-02-27,2025-02-28
-"Dalhousie University",14,Single,2025-02-27,2025-02-28
-"Jun Ly",14,Single,2025-02-27,2025-02-28
-"Jun Ly",11,Single,2025-02-27,2025-03-01
-"Dalhousie University",15,Double,2025-03-01,2025-03-03
+Jun,11,Single,2025-02-27,2025-02-28
+"Dalhousie University",14,Single,2025-02-27,2025-03-01
+"Dalhousie University",14,Single,2025-03-01,2025-03-03
